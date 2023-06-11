@@ -1,0 +1,54 @@
+{
+    "name": "iknowitza/vault",
+    "description": "Encrypts and Decrypts uploaded files for a laravel application..",
+    "keywords": [
+        "iknowitza",
+        "vault"
+    ],
+    "homepage": "https://github.com/iknowitza/vault",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Anton de Jager",
+            "email": "anton@iknowit.co.za",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "illuminate/support": "^8.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Iknowitza\\Vault\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Iknowitza\\Vault\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Iknowitza\\Vault\\VaultServiceProvider"
+            ],
+            "aliases": {
+                "Vault": "Iknowitza\\Vault\\VaultFacade"
+            }
+        }
+    }
+}
