@@ -18,6 +18,8 @@ composer require iknowitza/vault
 
 ```php
 // Usage description here
+php artisan vendor:publish --provider="Iknowitza\Vault\VaultServiceProvider" 
+
 ```
 
 ### Testing
