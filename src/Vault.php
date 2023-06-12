@@ -3,8 +3,9 @@
 namespace Iknowitza\Vault;
 
 use Exception;
-use Illuminate\Support\Str;
 use RuntimeException;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 
 class Vault
