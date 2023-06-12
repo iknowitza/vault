@@ -38,9 +38,9 @@ class Vault
 
     public function __construct()
     {
-        $this->disk = config('file-vault.disk');
-        $this->key = config('file-vault.key');
-        $this->cipher = config('file-vault.cipher');
+        $this->disk = config('vault.disk');
+        $this->key = config('vault.key');
+        $this->cipher = config('vault.cipher');
     }
 
     /**
@@ -77,28 +77,28 @@ class Vault
      */
     public static function generateKey(): string
     {
-        return random_bytes(config('file-vault.cipher') === 'AES-128-CBC' ? 16 : 32);
+        return random_bytes(config('vault.cipher') === 'AES-128-CBC' ? 16 : 32);
     }
 
     /**
      * Encrypt the passed file and saves the result in a new file with ".enc" as suffix.
      *
      * @param string $sourceFile Path to file that should be encrypted, relative to the storage disk specified
-     * @param string|null $destFile File name where the encrypted file should be written to, relative to the storage disk specified
+     * @param string|null $destinationFile File name where the encrypted file should be written to, relative to the storage disk specified
      * @param bool $deleteSource Delete the source file after encrypting
      * @return $this
      * @throws \Exception
      */
-    public function encrypt(string $sourceFile, ?string $destFile = null, bool $deleteSource = true): static
+    public function encrypt(string $sourceFile, ?string $destinationFile = null, bool $deleteSource = true): static
     {
         $this->registerServices();
 
-        if (is_null($destFile)) {
-            $destFile = "{$sourceFile}.enc";
+        if (is_null($destinationFile)) {
+            $destinationFile = "{$sourceFile}.enc";
         }
 
         $sourcePath = $this->getFilePath($sourceFile);
-        $destPath = $this->getFilePath($destFile);
+        $destPath = $this->getFilePath($destinationFile);
 
         // Create a new encrypter instance
         $encrypter = new Encrypter($this->key, $this->cipher);
@@ -115,13 +115,13 @@ class Vault
      * Encrypt the passed file and saves the result in a new file with ".enc" as suffix. The source file is not deleted.
      *
      * @param string $sourceFile Path to file that should be encrypted, relative to the storage disk specified
-     * @param string|null $destFile File name where the encrypted file should be written to, relative to the storage disk specified
+     * @param string|null $destinationFile File name where the encrypted file should be written to, relative to the storage disk specified
      * @return $this
      * @throws \Exception
      */
-    public function encryptCopy(string $sourceFile, ?string $destFile = null): static
+    public function encryptCopy(string $sourceFile, ?string $destinationFile = null): static
     {
-        return self::encrypt($sourceFile, $destFile, false);
+        return self::encrypt($sourceFile, $destinationFile, false);
     }
 
     /**
@@ -129,22 +129,22 @@ class Vault
      * last 4 characters from file name.
      *
      * @param string $sourceFile Path to file that should be decrypted
-     * @param string|null $destFile File name where the decrypted file should be written to.
+     * @param string|null $destinationFile File name where the decrypted file should be written to.
      * @return $this
      * @throws \Exception
      */
-    public function decrypt(string $sourceFile, ?string $destFile = null, bool $deleteSource = true): static
+    public function decrypt(string $sourceFile, ?string $destinationFile = null, bool $deleteSource = true): static
     {
         $this->registerServices();
 
-        if (is_null($destFile)) {
-            $destFile = Str::endsWith($sourceFile, '.enc')
+        if (is_null($destinationFile)) {
+            $destinationFile = Str::endsWith($sourceFile, '.enc')
                 ? Str::replaceLast('.enc', '', $sourceFile)
                 : $sourceFile . '.dec';
         }
 
         $sourcePath = $this->getFilePath($sourceFile);
-        $destPath = $this->getFilePath($destFile);
+        $destPath = $this->getFilePath($destinationFile);
 
         // Create a new encrypter instance
         $encrypter = new Encrypter($this->key, $this->cipher);
@@ -162,13 +162,13 @@ class Vault
      * last 4 characters from file name. Keep the source file
      *
      * @param string $sourceFile Path to file that should be decrypted
-     * @param string|null $destFile File name where the decrypted file should be written to.
+     * @param string|null $destinationFile File name where the decrypted file should be written to.
      * @return $this
      * @throws \Exception
      */
-    public function decryptCopy(string $sourceFile, ?string $destFile = null): static
+    public function decryptCopy(string $sourceFile, ?string $destinationFile = null): static
     {
-        return self::decrypt($sourceFile, $destFile, false);
+        return self::decrypt($sourceFile, $destinationFile, false);
     }
 
     /**
