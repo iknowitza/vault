@@ -38,6 +38,7 @@ class Vault
 
     public function __construct()
     {
+        //Retrieves the value of the vault config configuration key. 
         $this->disk = config('vault.disk');
         $this->key = config('vault.key');
         $this->cipher = config('vault.cipher');
@@ -77,6 +78,13 @@ class Vault
      */
     public static function generateKey(): string
     {
+        //We use the random_bytes() function to generate random bytes for the encryption key. 
+        //The random_bytes() function is a built-in PHP function that generates cryptographically secure random bytes.
+        //If the value of the configuration key 'vault.cipher' is 'AES-128-CBC', the condition evaluates to true, 
+        //and the generated key will have a length of 16 bytes (128 bits).
+        //
+        //If the value of the configuration key 'vault.cipher' is anything other than 'AES-128-CBC', 
+        //the condition evaluates to false, and the generated key will have a length of 32 bytes (256 bits).
         return random_bytes(config('vault.cipher') === 'AES-128-CBC' ? 16 : 32);
     }
 
@@ -188,17 +196,10 @@ class Vault
 
     protected function getFilePath($file): string
     {
-        if ($this->isS3File()) {
-            return "s3://{$this->adapter->getBucket()}/$file";
-        }
-
         return Storage::disk($this->disk)->path($file);
     }
 
-    protected function isS3File()
-    {
-        return $this->disk == 's3';
-    }
+   
 
     protected function setAdapter()
     {
@@ -213,9 +214,5 @@ class Vault
     {
         $this->setAdapter();
 
-        if ($this->isS3File()) {
-            $client = $this->adapter->getClient();
-            $client->registerStreamWrapper();
-        }
     }
 }
