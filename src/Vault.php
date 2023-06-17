@@ -38,7 +38,7 @@ class Vault
 
     public function __construct()
     {
-        //Retrieves the value of the vault config configuration key. 
+        //Retrieves the value of the vault config configuration file. 
         $this->disk = config('vault.disk');
         $this->key = config('vault.key');
         $this->cipher = config('vault.cipher');
