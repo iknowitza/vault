@@ -5,7 +5,7 @@ namespace Iknowitza\Vault;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Iknowitza\Vault\Skeleton\SkeletonClass
+ * @see \Iknowitza\Vault
  */
 class VaultFacade extends Facade
 {
